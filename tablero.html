@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablero</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        background-color: white;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="tablero"></canvas>
+    <script>
+      const canvas = document.getElementById("tablero");
+      const ctx = canvas.getContext("2d");
+      const size = 800;
+      const rows = 8;
+      const cols = 8;
+      const squareSize = size / rows;
+
+      canvas.width = size;
+      canvas.height = size;
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          ctx.fillStyle = (row + col) % 2 === 0 ? "#ffffff" : "#000000";
+          ctx.fillRect(
+            col * squareSize,
+            row * squareSize,
+            squareSize,
+            squareSize
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
