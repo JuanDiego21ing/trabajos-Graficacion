@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colisión Círculos</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      canvas {
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="Círculos" width="600" height="400"></canvas>
+
+    <script>
+      const canvas = document.getElementById("Círculos");
+      const ctx = canvas.getContext("2d");
+
+      const circleFijo = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        radius: 50,
+        color: "green",
+      };
+
+      const circleMovil = { x: 0, y: 0, radius: 50, color: "green" };
+
+      function isColliding(c1, c2) {
+        let dx = c1.x - c2.x;
+        let dy = c1.y - c2.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < c1.radius + c2.radius;
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (isColliding(circleFijo, circleMovil)) {
+          circleFijo.color = circleMovil.color = "blue";
+        } else {
+          circleFijo.color = circleMovil.color = "green";
+        }
+
+        ctx.fillStyle = circleFijo.color;
+        ctx.beginPath();
+        ctx.arc(circleFijo.x, circleFijo.y, circleFijo.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = circleMovil.color;
+        ctx.beginPath();
+        ctx.arc(
+          circleMovil.x,
+          circleMovil.y,
+          circleMovil.radius,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+      }
+
+      canvas.addEventListener("mousemove", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        circleMovil.x = event.clientX - rect.left;
+        circleMovil.y = event.clientY - rect.top;
+      });
+
+      draw();
+    </script>
+  </body>
+</html>

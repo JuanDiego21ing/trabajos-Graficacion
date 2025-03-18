@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colisión Rectángulos</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      canvas {
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="Rectángulos" width="600" height="400"></canvas>
+
+    <script>
+      const canvas = document.getElementById("Rectángulos");
+      const ctx = canvas.getContext("2d");
+
+      const rectFijo = {
+        x: canvas.width / 2 - 50,
+        y: canvas.height / 2 - 50,
+        width: 100,
+        height: 100,
+        color: "green",
+      };
+
+      const rectMovil = { x: 0, y: 0, width: 100, height: 100, color: "green" };
+
+      function isColliding(r1, r2) {
+        return (
+          r1.x < r2.x + r2.width &&
+          r1.x + r1.width > r2.x &&
+          r1.y < r2.y + r2.height &&
+          r1.y + r1.height > r2.y
+        );
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (isColliding(rectFijo, rectMovil)) {
+          rectFijo.color = rectMovil.color = "blue";
+        } else {
+          rectFijo.color = rectMovil.color = "green";
+        }
+
+        ctx.fillStyle = rectFijo.color;
+        ctx.fillRect(rectFijo.x, rectFijo.y, rectFijo.width, rectFijo.height);
+
+        ctx.fillStyle = rectMovil.color;
+        ctx.fillRect(
+          rectMovil.x,
+          rectMovil.y,
+          rectMovil.width,
+          rectMovil.height
+        );
+
+        requestAnimationFrame(draw);
+      }
+
+      canvas.addEventListener("mousemove", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        rectMovil.x = event.clientX - rect.left - rectMovil.width / 2;
+        rectMovil.y = event.clientY - rect.top - rectMovil.height / 2;
+      });
+
+      draw();
+    </script>
+  </body>
+</html>
